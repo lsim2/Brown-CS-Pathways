@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <link rel="stylesheet" href="main.css">
+        <title>Pathways</title>
+    </head>
+    <body>
+        <h1>Brown CS Courses</h1>
+        <div class="filters">
+        <!--<h2>Filter by Level</h2>
+        <div class="button-group" data-filter-group="level">  <button class="button is-checked" data-filter="*">All</button>
+            <button class="button" data-filter=".white">Intro</button>
+            <button class="button" data-filter=".grey">Intermediate</button>
+            <button class="button" data-filter=":not(.white, .grey)">Advanced</button>
+        </div>-->
+        <h2>Filter by Pathway</h2>
+         <div class="button-group" data-filter-group="pathway">  <button class="button is-checked" data-filter="*">All</button> 
+            <button class="button" data-filter=".red,.Systems">Systems</button>
+            <button class="button" data-filter=".orange,.orange-yellow,.Theory">Theory</button>
+            <button class="button" data-filter=".yellow,.orange-yellow,.Security">Security</button>
+            <button class="button" data-filter=".green,.CBio">Comp Bio</button>
+            <button class="button" data-filter=".teal,.Software">Software</button>
+            <button class="button" data-filter=".blue,.blue-navy,.Data">Data</button>
+            <button class="button" data-filter=".navy,.blue-navy,.navy-purple,.AI">AI</button>
+            <button class="button" data-filter=".purple,.navy-purple,.pink-purple,.Viz">Visual Computing</button>
+            <button class="button" data-filter=".pink,.pink-purple,.Design">Design</button>
+            <button class="button" data-filter=".brown,.Architecture">Architecture</button>
+            <button class="button" data-filter=":not(.white, .grey)">Advanced Only</button>
+        </div>
+        </div>
+        
+        <h2>Sort by</h2>
+        <div id="sorts" class="button-group">  
+            <button class="button is-checked" data-sort-by="original-order">Pathway</button>
+            <button class="button" data-sort-by="code">Code</button>
+            <button class="button" data-sort-by="name">Name</button>
+        </div>
+        
+        <template id="box-template">
+            <div class="box"  onclick="moreInfo()" data-category="Introductory" data-core='z'>
+
+                <!--change id and name to cross -->
+                <img class="plus-image" id="image-01" name="image-01" src="Images/plus.png" onclick='toggle(id, this, ["Images/Tick.png"]);'>
+
+                <div class="circle core">
+                    <!--change image -->
+                    <img class="pathway-image" src="Images/Software.png">
+                    <p class="core pathway-text"> <!--add Pathway name --></p>
+                </div>
+
+                <div class="circle core1">
+                    <!--change image -->
+                    <img class="pathway-image" src="Images/Data.png">
+                    <p class="core pathway-text"><b>Data</b></p>
+                </div>
+
+                <div class="circle core2">
+                    <!--change image -->
+                    <img class="pathway-image" src="Images/AI.png">
+                    <p class="core pathway-text"><b>AI</b></p>
+                </div>
+
+                <div class="circle sub1">
+                    <!--change image -->
+                    <img class="pathway-image sub" src="Images/Systems.png">
+                    <p class="subP pathway-text sub"><!--add Pathway name --></p>
+                </div>
+
+                <div class="circle sub2">
+                    <!--change image -->
+                    <img class="pathway-image sub" src="Images/Systems.png">
+                    <p class="subP pathway-text sub"><!--add Pathway name --></p>
+                </div>
+
+                <div class="circle sub3">
+                    <!--change image -->
+                    <img class="pathway-image sub" src="Images/Systems.png">
+                    <p class="subP pathway-text sub"><!--add Pathway name --></p>
+                </div>
+
+                <div class="box-text"><b><!--class code --></b></div>
+                <p class="box-name"><!--Class name --></p>
+            </div>
+        </template>
+        <div class="grid">
+            <div id="courses">
+
+            </div>
+        </div>
+        <div id="info-holder"></div>
+    </body>
+    <script src="JS/libs/jquery-3.2.1.min.js"></script>
+    <script src="JS/libs/isotope.pkgd.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</html>
