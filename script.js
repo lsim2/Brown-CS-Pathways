@@ -7,7 +7,7 @@ const courses = [
     {'code': 'CSCI 1010', 'name': 'Theory of Computation', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Theory','Security', 'CBio']},
     {'code': 'MATH 0520', 'name': 'Linear Algebra', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Data','AI', 'Theory', 'Viz']},
     {'code': 'APMA 1650', 'name': 'Statistical Inference 1', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['AI', 'CBio', 'Design', 'Security', 'Theory']},
-    {'code': 'MATH 0180', 'name': 'Multivariable Calculus', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Data','AI', 'Viz']},
+    {'code': 'MATH 0180', 'name': 'Multivariable Calculus', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Data','Viz']},
     {'code': 'CSCI 1380', 'name': 'Distributed Computer Systems', 'color': 'red', 'core1': 'Systems', 'sub1': 'Software', 'sub2': 'Security'},
     {'code': 'CSCI 1670', 'name': 'Operating Systems', 'color': 'red', 'core1': 'Systems', 'sub1': 'Security'},
     {'code': 'CSCI 1680', 'name': 'Computer Networks', 'color': 'red', 'core1': 'Systems'},
