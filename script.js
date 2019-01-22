@@ -319,7 +319,7 @@ function checkDegree(cart) {
         }
    } else if (cart.size >= 9) {
         if (introComplete && interAB && numPaths >= 1 && pathsTouched > 0) {
-            $("#complete").text("AB Completed!! Complete 15 courses with a capstone!");
+            $("#complete").text("AB Completed!! Complete 15 courses with a capstone to complete a ScB!");
             if (numPaths < 2) {
                 $("#complete").text("AB Completed!! Complete 15 courses and one pathway out of: [" + nonPathStrings.substring(1) + "] to complete an ScB!");
             }
