@@ -9,26 +9,30 @@ body {
 }
 a:link {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 a:visited {
     text-decoration: none;
-    color: black;
+    color: white;
 }
 
 a:link.white {
     text-decoration: none;
-    color: white;
+    color: black;
 }
 
 a:visited.white{
     text-decoration: none;
-    color: white;
+    color: black;
 }
 
 a:hover {
-    text-decoration: underline;
+    color: #ffff99;
+}
+
+a:hover.white {
+    color: grey;
 }
 
 /*---box---*/
@@ -136,6 +140,14 @@ a:hover {
 }
 
 .box-name.black {
+    color:black;
+}
+
+.box-text.black.a {
+    color:black;
+}
+
+.box-name.black.a {
     color:black;
 }
 
@@ -542,4 +554,34 @@ a:hover {
 
 .brown {
     background-color: #8D6E63;
+}
+
+#ab {
+  width: 95%;
+  background-color: #ddd;
+}
+
+#scb {
+  width: 95%;
+  background-color: #ddd;
+}
+
+#myBar {
+  padding: 5px;
+  width: 0%;
+  height: 20px;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
+
+#myBar2 {
+  padding: 5px;
+  width: 0%;
+  height: 20px;
+  background-color: #ddd;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }
