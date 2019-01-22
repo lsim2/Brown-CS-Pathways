@@ -1,6 +1,9 @@
 const courses = [
     {'code': 'CSCI 0150', 'name': 'Introduction to Object-Oriented Programming', 'color': 'white', 'core1': 'Introductory'},
     {'code': 'CSCI 0160', 'name': 'Introduction to Algorithms and Data Structures', 'color': 'white', 'core1': 'Introductory'},
+    {'code': 'CSCI 0170', 'name': 'An Integrated Introduction', 'color': 'white', 'core1': 'Introductory'},
+    {'code': 'CSCI 0180', 'name': 'An Integrated Introduction', 'color': 'white', 'core1': 'Introductory'},
+    {'code': 'CSCI 0190', 'name': 'Accelerated Introduction to Computer Science', 'color': 'white', 'core1': 'Introductory'},
     {'code': 'CSCI 0220', 'name': 'Introduction to Discrete Structures and Probability', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Systems','Software', 'Security', 'CBio']},
     {'code': 'CSCI 0330', 'name': 'Introduction to Computer Systems', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Systems','Software', 'Data', 'Security', 'Viz', 'Design', 'Architecture']},
     {'code': 'CSCI 0320', 'name': 'Introduction to Software Engineering', 'color': 'grey', 'core1': 'Intermediate', 'pathways':['Systems','Software', 'Data', 'Viz', 'Design']},
