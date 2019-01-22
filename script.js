@@ -64,16 +64,18 @@ const courses = [
     {'code': 'ENGN 1600', 'name': 'Design of VLSI Systems', 'color': 'brown', 'core1': 'Architecture'},
 ];
 
+let interList = {
+	'All': ['CSCI 0220', 'CSCI 1010', 'MATH 0520', 'APMA 1650', 'MATH 0180', 'CSCI 0330', 'CSCI 0320'],
+	'Foundations': ['CSCI 0220', 'CSCI 1010'],
+	'Mathematics': ['MATH 0520', 'APMA 1650', 'MATH 0180'],
+	'Systems': ['CSCI 0330', 'CSCI 0320']
+};
+
+
 let emtpyImg = "https://d30y9cdsu7xlg0.cloudfront.net/png/38623-200.png";
 
 var cart = new Set();
 var displayed = false;
-function moreInfo() {
-//    if (displayed || checked) { return; }
-//    else { displayed = true; }
-//    var newDiv = "<div class='info-box'><img class='cross-image' src='Images/plus.png' onclick='closeThis()'><div class='circle core info'><img class='pathway-image' src='Images/Introductory.png'><p class='pathway-text' style='font-size: 7px; margin-top: -7px;'><b>Introductory</b></p></div><div class='box-text black info'><b>CSCI 0150</b></div><p class='box-name black info'><a href='http://cs.brown.edu/courses/csci0150/' target='_blank'>Introduction to Object-Oriented Programming</a></p><p class='box-name black prof'>Andy Van Dam</p><p class='box-name black time'>TTh 2.30-4pm</p><p class='box-name black prereqs'>Pre-reqs: None</p><p class='box-name black workload'><a href='http://www.thecriticalreview.org/CSCI/0150' target='_blank'>Workload: 11.8-23.4 hrs/week</a></p><p class='box-name black workload'>Pathways: All<p class='box-name black workload'>Offered in: Fall</p></div>"; 
-//    document.getElementById("info-holder").innerHTML += newDiv;
-}
 
 function closeThis() {
     displayed = false; 
@@ -82,7 +84,20 @@ function closeThis() {
 
 //TODO: Remove Check??
 var gStorage = {};
+let intermediates = {
+	'Total': new Set(),
+	'Number': 0,
+	'Foundations': new Set(),
+	'Mathematics': new Set(),
+	'Systems': new Set(),
+};
+let advanced = {
+    'Total': 0,
+};
 var checked = false;
+let introComplete = false;
+let interAB = false; 
+let interScB = false; 
 function toggle(code, anImage, anAltSrcArr) {
     checked = true; 
     if (typeof(anImage) === "undefined" || typeof(anAltSrcArr) === "undefined" || anAltSrcArr.length === 0) {
@@ -106,19 +121,240 @@ function toggle(code, anImage, anAltSrcArr) {
     }
 
     if (gStorage[id].i === 0) {
+        anImage.parentNode.classList.remove("checked");
         anImage.src = gStorage[id].origSrc;
         courseArray[code].in_cart = false;
         cart.delete(code);
+
+        // remove from intermediates
+        if (interList['All'].includes(code)) {
+    		for (var type in interList) {
+    			if (type == 'All') continue;
+    			if (intermediates[type].has(code)) {
+    				intermediates[type].delete(code);
+    				if (intermediates[type].size == 0) intermediates['Number'] -= 1;
+    				intermediates['Total'].delete(code);
+    			}
+    		} // remove from advanced
+    	} else if (courseArray[code].core != "Introductory") {
+            let course = courseArray[code];
+            removeCore(course, course.core);
+
+            if (!(typeof(course.core2) === "undefined")) {
+                removeCore(course, course.core2);
+            }
+            
+            for (i = 0; i < course.subs.length; i++) {
+                let sub = course.subs[i];
+                if (sub in advanced) {
+                    advanced[sub].set.delete(code);
+                } 
+            }
+            advanced["Total"] -= 1;
+
+        }
     } else {
+        anImage.parentNode.classList.add("checked");
         anImage.src = anAltSrcArr[gStorage[id].i - 1];
         courseArray[code].in_cart = true;
         cart.add(code);
+        if (interList['All'].includes(code)) {
+    		for (var type in interList) {
+    			if (type == 'All') continue;
+    			if (interList[type].includes(code)) {
+    				if (intermediates[type].size == 0) intermediates['Number'] += 1;
+    				intermediates[type].add(code);
+    				intermediates['Total'].add(code);
+    			}
+    		} // check advanced
+    	} else if (courseArray[code].core != "Introductory") {
+            let course = courseArray[code];
+            addCore(course, course.core);
+
+            if (!(typeof(course.core2) === "undefined")) {
+                addCore(course, course.core2);
+            }
+            
+            for (i = 0; i < course.subs.length; i++) {
+                let sub = course.subs[i];
+                if (!(sub in advanced)) {
+                    advanced[sub] = {
+                        'core': false,
+                        'set': new Set(),
+                        'done': false
+                    };
+                } 
+                advanced[sub].set.add(code);
+            }
+            advanced["Total"] += 1;
+
+        }
     }
-    //    console.log(cart);
+    checkIntro(cart);
+    checkInter();
+    checkDegree(cart);
+}
+
+function intermediatesOfPathway(pathway) {
+    let interSet = intermediates["Total"];
+    let interSatisfied = false;
+    switch(pathway) {
+      case "Systems":
+        interSatisfied = interSet.has("CSCI 0330") && (interSet.has("CSCI 0220") || interSet.has("CSCI 0320"));
+        break;
+      case "Software":
+        interSatisfied = interSet.has("CSCI 0330") && interSet.has("CSCI 0220") && interSet.has("CSCI 0320");
+        break;
+      case "Data":
+        interSatisfied = interSet.has("APMA 1650") && interSet.has("MATH 0520") && (interSet.has("CSCI 0320") || interSet.has("CSCI 0330"));
+        break;
+      case "AI":
+        interSatisfied = interSet.has("APMA 1650") && interSet.has("MATH 0520");
+        break;
+      case "Theory":
+        interSatisfied = interSet.has("APMA 1650") && interSet.has("MATH 0520") && interSet.has("CSCI 1010");
+        break;
+      case "Security":
+        interSatisfied = (interSet.has("APMA 1650") || interSet.has("CSCI 0220")) && interSet.has("CSCI 0330") && interSet.has("CSCI 1010");
+        break;
+      case "Viz Comp":
+        interSatisfied = (interSet.has("CSCI 0330") || interSet.has("CSCI 0320")) && interSet.has("MATH 0520");
+        break;
+      case "Architecture":
+        interSatisfied = interSet.has("CSCI 0330");
+        break;
+      case "Comp Bio":
+        interSatisfied = interSet.has("CSCI 0220") && interSet.has("APMA 1650") && interSet.has("CSCI 1010");
+        break;
+      case "Design":
+        interSatisfied = (interSet.has("CSCI 0330") || interSet.has("CSCI 0320")) && interSet.has("APMA 1650");
+        break;
+      default:
+        break;
+    }
+    return interSatisfied;
+}
+
+function addCore(course, core) {
+    if (core in advanced) {
+        advanced[core].set.add(course.img_id);
+        advanced[core].core = true;
+    } else if (!(core in advanced) && core != "No core") {
+        advanced[core] = {
+            'core': true,
+            'set': new Set(), 
+            'done': false
+        };
+            advanced[core].set.add(course.img_id);
+        } 
+}
+
+function removeCore(course, core) {
+    if (core in advanced) {
+        advanced[core].set.delete(course.img_id);
+        for (let code of advanced[core].set) { 
+            if (!(courseArray[code].core == core || courseArray[code].core2 == core)) {
+                advanced[core].core = false;
+                advanced[core].done = false;
+            }
+        }
+        
+    } 
+}
+
+function checkPathwayComplete(core) {
+    advanced[core].done = false; 
+    if (advanced[core].set.size >= 2 && advanced[core].core) {
+            if (intermediatesOfPathway(core)) {
+                advanced[core].done = true;  
+            } 
+    }
+    return advanced[core].done;
+}
+
+function checkIntro(cart) {
+	if ((cart.has("CSCI 0150") && cart.has("CSCI 0160")) 
+    	|| (cart.has("CSCI 0170") && cart.has("CSCI 0180"))
+    	|| cart.has("CSCI 0190"))  {
+    	introComplete = true;
+	} else {
+		introComplete = false;
+	}
+}
+
+function checkInter() {
+	if (intermediates['Number'] >= 3 && intermediates['Total'].size >= 5) {
+		interScB = true;
+	} else if (intermediates['Number'] >= 2 && intermediates['Total'].size >= 3) {
+		interScB = false;
+		interAB = true;
+	} else {
+		interScB = false;
+		interAB = false;
+	}
+}
+
+function checkDegree(cart) {
+    let numPaths = 0;
+    let pathStrings = "";
+    let nonPathStrings = "";
+    let pathsTouched = 0;
+    for (var p in advanced) {
+            if (p != "Total") {
+                if (checkPathwayComplete(p))  {
+                    numPaths++; 
+                    pathStrings += ", " + p;
+                } else {
+                    pathsTouched++;
+                    nonPathStrings += ", " + p;
+                }
+            }
+    }
+    if (numPaths > 0) $("#progress").text("Selected " + cart.size + " courses and " + numPaths + " pathway(s): " + pathStrings.substring(1));
+    else { $("#progress").text("Selected " + cart.size + " course(s). Select intermediate and advanced courses to see which pathways you can complete!"); }
+   $("#complete").text("");
+   if (cart.size >= 15) {
+         if (introComplete && interScB && numPaths >= 2 && pathsTouched > 0) {
+            $("#complete").text("ScB Completed!! Make sure you do a Capstone!");
+        }
+   } else if (cart.size >= 9) {
+        if (introComplete && interAB && numPaths >= 1 && pathsTouched > 0) {
+            $("#complete").text("AB Completed!! Complete 15 courses with a capstone!");
+            if (numPaths < 2) {
+                $("#complete").text("AB Completed!! Complete 15 courses and one pathway out of: [" + nonPathStrings.substring(1) + "] to complete an ScB!");
+            }
+            
+        }
+    }
+   
 }
 
 function adjust() {
     checked = false; 
+}
+
+function move(num) {
+  var elem = document.getElementById("myBar");   
+  var width = 1;
+  if (elem.style.width == (num+'%')) return;
+  if (num == 0) {
+       elem.style.backgroundColor = '#ddd';
+       elem.style.width = '0%'; 
+       elem.innerHTML = '0%';
+       return;     
+  } 
+  var id = setInterval(frame, 10);
+  function frame() {
+      if (width >= num) {
+      clearInterval(id);
+    } else {
+      width++; 
+      elem.style.backgroundColor = '#4CAF50';
+      elem.style.width = width + '%'; 
+      elem.innerHTML = width * 1  + '%';
+    }
+    }
+   
 }
 
 /*----------colors-2--------------*/
@@ -216,6 +452,17 @@ for (var i = 0; i < courses.length; i++) {
 
     tmpl.querySelector('.box-text').innerText = course.code;
     tmpl.querySelector('.box-name').innerText = course.name;
+    let courseCode = course.code.toLowerCase().split(" ");
+    if (courseCode[0] == "csci") {
+    	let code = courseCode[1];
+    	if (courseCode[1].length > 4) {
+    		code = courseCode[1].substring(0,4) + "-" + courseCode[1].substring(4,5).toLowerCase();
+    	}
+    	const link = "https://cs.brown.edu/courses/info/csci" + code + "/";
+    	tmpl.querySelector('.box-text').innerHTML = "<a class='" + course.color + "'href='" + link + "' target='_blank'>"+ course.code + "</a>";
+    	tmpl.querySelector('.box-name').innerHTML = "<a class='" + course.color + "'href='" + link + "' target='_blank'>"+ course.name + "</a>";
+    } 
+    
     if (course.core1 == "Introductory") {
         tmpl.querySelector('.box-text').classList.add("black");
         tmpl.querySelector('.box-name').classList.add("black");
@@ -253,8 +500,11 @@ for (var i = 0; i < courses.length; i++) {
             'subs': subs,
             category: categ,
         };
+
+        if (!(typeof(course.core2) === "undefined")) {
+            courseArray[course.code].core2 = course.core2;
+        }
     } 
-    //console.log(courseArray);
 }
 
 /*----Isotope stuff---*/
