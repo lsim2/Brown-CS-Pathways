@@ -8,7 +8,19 @@
     </head>
     <body>
         <h1>Brown CS Courses</h1>
+        <h3 id="complete"></h3>
+        <h4 id="progress"></h4>
+        <!--<h4>Progress to A.B. </h4>
+        
+        <div id="ab">
+            <div id="myBar">0%</div>
+        </div>
+        <h4>Progress to Sc.B. </h4>
+        <div id="scb">
+            <div id="myBar2">0%</div>
+        </div>-->
         <div class="filters">
+
         <!--<h2>Filter by Level</h2>
         <div class="button-group" data-filter-group="level">  <button class="button is-checked" data-filter="*">All</button>
             <button class="button" data-filter=".white">Intro</button>
@@ -28,6 +40,7 @@
             <button class="button" data-filter=".pink,.pink-purple,.Design">Design</button>
             <button class="button" data-filter=".brown,.Architecture">Architecture</button>
             <button class="button" data-filter=":not(.white, .grey)">Advanced Only</button>
+            <button class="button" data-filter=".checked">Mine</button>
         </div>
         </div>
         
@@ -36,10 +49,11 @@
             <button class="button is-checked" data-sort-by="original-order">Pathway</button>
             <button class="button" data-sort-by="code">Code</button>
             <button class="button" data-sort-by="name">Name</button>
+
         </div>
         
         <template id="box-template">
-            <div class="box"  onclick="moreInfo()" data-category="Introductory" data-core='z'>
+            <div class="box" data-category="Introductory" data-core='z'>
 
                 <!--change id and name to cross -->
                 <img class="plus-image" id="image-01" name="image-01" src="Images/plus.png" onclick='toggle(id, this, ["Images/Tick.png"]);'>
@@ -95,3 +109,4 @@
     <script src="JS/libs/isotope.pkgd.min.js"></script>
     <script type="text/javascript" src="script.js"></script>
 </html>
+
